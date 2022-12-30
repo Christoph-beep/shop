@@ -1,0 +1,111 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Verlinkungen -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!--Verlinkunen ENDE-->
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/startseite">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Übersicht Produkte
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <!-- Dropdown End-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/guthaben">Guthaben aufladen</a>
+                    </li>
+
+                    <li>
+                        <a class="nav-link" href="/kontakt">Kontakt</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Registrieren
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/login">Login</a></li>
+                            <li><a class="dropdown-item" href="/registerUsers">Registrieren</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar end-->
+
+    <body>
+
+        <!-- login -->
+
+        <!-- Input is transmitted through a formValue-->
+        <h2 class="padding-top-verySmall text-center ">login</h2>
+
+        <div class="input-group mb-3 margin-top-small justify-content-center col-lg-6 padding-top-small">
+            <form action="" method="post">
+                <label for="text" class="text-center">Username</label>
+                <input name="usernameLogin" type="text" class="form-control center " placeholder="login"
+                    aria-label="login" aria-describedby="basic-addon1" required>
+                <br>
+                <button type="submit" class="margin-top-small mx-auto ">abschließen</button>
+                <!-- not equal to "" and logOut-->
+                {{if ne .currentlyLoggedInUserName ""}}
+                <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
+                </h4>
+                {{end}}
+            </form>
+        </div>
+
+        <!-- logout-->
+        <h2 class="padding-top-verySmall text-center">logout</h2>
+
+        <div class="input-group mb-3 margin-top-small justify-content-center col-lg-6 padding-top-small">
+            <form action="" method="post">
+
+
+
+                <br>
+                <button type="submit" class="margin-top-small mx-auto " value="logout" name="logout1">ausloggen
+                </button>
+
+                {{if .currentlyLoggedInUserName ""}}
+                <h4 class="padding-top-small">Du hast dich erfolgreich augeloggt</h4>
+                {{end}}
+
+
+            </form>
+
+
+        </div>
+
+    </body>
+
+</html>

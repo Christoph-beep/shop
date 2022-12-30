@@ -1,0 +1,28 @@
+todo:
+
+done 
+
+Nutzer kann sich über die guthaben seite guthaben aufladen 
+Nutzer kann sich mit cobblestone produkte kaufen 
+addCredits = technische URl zum aufladen von Guthaben 
+Nutzer kann sich über Webseite registrieren 
+if trying to register with a usernamen, that is already taken, the user gets an error message 
+
+
+need to be done 
+
+Wenn Nutzer Guthaben aufladen will, jedoch nicht existiret -> Info
+Nutzernamen in Ordner schreiben
+Info das Nutzer schon registriert, wenn Nutzer der schon registriert ist sich versucht zu registrieren -> Z.96 bool passen
+einfachen login für nutzer bauen !
+
+
+
+
+
+Einbinden von Datenbanken (mit Maria Db und docker, datenbank hosten + Anbindung an go)
+
+
+entfernt
+
+Nutzer über URL registrieren

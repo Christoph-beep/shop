@@ -1,5 +1,7 @@
-module mintendo-programmer.de/onlineshop
+module goProject
 
-go 1.17
+// Externes Tool !!!
 
-require github.com/gorilla/mux v1.8.0
+go 1.18
+
+require github.com/gorilla/mux v1.8.0 // indirect
