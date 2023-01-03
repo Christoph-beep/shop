@@ -1,0 +1,50 @@
+/* Zentrierung*/
+.center {
+    text-align: center;
+}
+
+/* Größen*/
+
+.imageKlein {
+    max-width: 40%;
+    max-height: auto;
+}
+
+/* Abstände */
+
+.padding-top-small {
+    padding-top: 5%;
+}
+
+.padding-top-verySmall {
+    padding-top: 3%;
+}
+
+
+.margin-right-small {
+    margin-right: 5%;
+}
+
+.margin-left-small {
+    margin-left: 5%;
+}
+
+
+/* Carousel */
+.carousel1 {
+    padding-right: 3%;
+    padding-left: 3%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+span.carousel-control-prev-icon {
+    background-image: url("/assets/Bilder/carousell/chevron-compact-left.svg");
+
+}
+
+span.carousel-control-next-icon {
+    background-image: url("/assets/Bilder/carousell/chevron-compact-right.svg");
+}
+
+/* IDS */
