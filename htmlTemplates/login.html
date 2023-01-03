@@ -77,23 +77,23 @@
                 <br>
                 <button type="submit" class="margin-top-small mx-auto ">abschließen</button>
                 <!-- not equal to "" and logOut-->
+
+                <!-- Execution stops here ERROR-->
+
+
                 {{if ne .currentlyLoggedInUserName ""}}
                 <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
                 </h4>
                 {{end}}
             </form>
-        </div>
-
-        <!-- logout-->
-        <h2 class="padding-top-verySmall text-center">logout</h2>
-
-        <div class="input-group mb-3 margin-top-small justify-content-center col-lg-6 padding-top-small">
+            <!-- logout-->
+            <h2 class="padding-top-verySmall text-center">logout</h2>
             <form action="" method="post">
 
 
 
                 <br>
-                <button type="submit" class="margin-top-small mx-auto " value="logout" name="logout1">ausloggen
+                <button type="submit" class="margin-top-small mx-auto " value=true name="logout1">ausloggen
                 </button>
 
                 {{if .currentlyLoggedInUserName ""}}
@@ -102,9 +102,12 @@
 
 
             </form>
-
-
         </div>
+
+
+
+
+
 
     </body>
 

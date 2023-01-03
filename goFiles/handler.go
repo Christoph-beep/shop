@@ -1,12 +1,29 @@
 package goFiles
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
 	"text/template"
 )
+
+//// Important globally ////
+
+// for any mistakes
+func error404(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	t, _ := template.ParseFiles("htmlTemplates/404.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
+	t.Execute(w, nil)
+
+}
+
+func (i Inventar) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+}
+
+//// end ////
 
 // parseGlob anschauen
 
@@ -25,7 +42,6 @@ func viewhandler(w http.ResponseWriter, r *http.Request) {
 // get über URL
 
 func saveHandler(w http.ResponseWriter, r *http.Request) {
-	// umbauen, nicht mehr über URL, sondern aus Form
 	username := r.FormValue("userNameRegister")
 	cobbleStoneString := r.FormValue("cobblestone")
 	cobblestone, _ := strconv.Atoi(cobbleStoneString)
@@ -34,30 +50,10 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/view/"+username, http.StatusFound)
 }
 
-// for any mistakes
-func error404(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-	t, _ := template.ParseFiles("htmlTemplates/404.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
-	t.Execute(w, nil)
-
-}
-
 func products(w http.ResponseWriter, r *http.Request) {
 	t, _ := template.ParseFiles("htmlTemplates/startingPage.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	t.Execute(w, nil)
 	httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
-
-	// Es gibt 2 wichtige Datentypen
-	//http.Handler
-
-	//ergebnis := http.HandlerFunc(error404)
-	//ergebnis.ServeHTTP()
-
-	//inv.ServeHTTP()
-
-}
-
-func (i Inventar) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -82,7 +78,6 @@ func guthaben(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// error
 func contact(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("htmlTemplates/kontakt.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	fmt.Println(err)
@@ -93,14 +88,6 @@ func formsCredithandler(w http.ResponseWriter, r *http.Request) {
 
 	loggedInUser := GetActiveUser(r)
 
-	// User is not registered and therefore can not add credits
-	/*if !checkIfUserExists(username) && username != "" {
-		t, err := template.ParseFiles("htmlTemplates/guthaben.html")
-		fmt.Println("user exists not l 98 ")
-		fmt.Println(err)
-		t.Execute(w, nil)
-		return
-	}*/
 	inventory, err2 := loadInventory(loggedInUser.Username)
 
 	if err2 != nil {
@@ -187,10 +174,9 @@ func registerUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginUser(w http.ResponseWriter, r *http.Request) {
-	IsUserLoggedIn := false
 	type UserLoggIn struct {
-		UserLoggedIn              bool
 		currentlyLoggedInUserName string
+		errorWrongUsername        error
 	}
 
 	t, err := template.ParseFiles("htmlTemplates/login.html")
@@ -202,11 +188,12 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 	// logout information comes through the "name" fild in login
 
 	currentlyLoggedInUser := r.FormValue("usernameLogin")
+	// not a nice solution using a string called logout1 instead of a bool, but works currently
 	usernameLogout := r.FormValue("logout1")
 
 	currentlyUser := UserLoggIn{
-		UserLoggedIn:              IsUserLoggedIn,
 		currentlyLoggedInUserName: currentlyLoggedInUser,
+		errorWrongUsername:        invalidUsername(),
 	}
 
 	if usernameLogout == "logout" {
@@ -219,12 +206,18 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		Login(currentlyLoggedInUser)
 		// testing because of logout in the html partcurrentlyLoggedInUserName login
 		t.Execute(w, currentlyUser)
-		currentlyUser.UserLoggedIn = true
 
-		// Login mit ungültigem Nutzernamen
+		// Login without an valid username
 	} else {
-		error404(w, nil)
+		currentlyUser.errorWrongUsername =
+			t.Execute(w, currentlyUser.errorWrongUsername)
 		currentlyLoggedInUser = ""
 	}
 
+}
+
+// error handeling here, later new file
+
+func invalidUsername() error {
+	return errors.New("this username is invalid, please register or log in with a valid one")
 }
