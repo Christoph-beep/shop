@@ -79,7 +79,9 @@
                 <!-- not equal to "" and logOut-->
 
                 <!-- Execution stops here ERROR-->
-
+                {{if ne .err ""}}
+                    <p>{{.err}}</p>
+                {{end}}
 
                 {{if ne .currentlyLoggedInUserName ""}}
                 <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
