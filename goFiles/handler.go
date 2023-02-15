@@ -198,22 +198,21 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 
 	if usernameLogout == "logout" {
 		currentlyUser.currentlyLoggedInUserName = ""
-		fmt.Println(currentlyUser.currentlyLoggedInUserName)
+		fmt.Println(currentlyUser)
 	}
 
 	// try to log in user
 	if checkIfUserExists(currentlyLoggedInUser) {
 		Login(currentlyLoggedInUser)
 		// testing because of logout in the html partcurrentlyLoggedInUserName login
-		t.Execute(w, currentlyUser)
 
 		// Login without an valid username
 	} else {
-		currentlyUser.errorWrongUsername =
-			t.Execute(w, currentlyUser.errorWrongUsername)
+		//currentlyUser.errorWrongUsername =
 		currentlyLoggedInUser = ""
-	}
 
+	}
+	t.Execute(w, currentlyUser.currentlyLoggedInUserName)
 }
 
 // error handeling here, later new file
@@ -221,3 +220,10 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 func invalidUsername() error {
 	return errors.New("this username is invalid, please register or log in with a valid one")
 }
+
+/*
+ {{if ne .currentlyLoggedInUserName ""}}
+                <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
+                </h4>
+                {{end}}
+*/

@@ -79,30 +79,40 @@
                 <!-- not equal to "" and logOut-->
 
                 <!-- Execution stops here ERROR-->
-
-
-                {{if ne .currentlyLoggedInUserName ""}}
-                <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
-                </h4>
-                {{end}}
             </form>
-            <!-- logout-->
-            <h2 class="padding-top-verySmall text-center">logout</h2>
+
+        </div>
+
+        <div class="text-center">
+            {{if ne . ""}}
+            <h4>Hallo {{.}}, du hast dich erfolgreich eingeloggt</h4>
+            {{end}}
+        </div>
+
+
+
+
+
+
+        <!-- logout-->
+        <div class="center">
+            <h2 class="padding-top-verySmall ">logout</h2>
             <form action="" method="post">
-
-
 
                 <br>
                 <button type="submit" class="margin-top-small mx-auto " value=true name="logout1">ausloggen
                 </button>
 
-                {{if .currentlyLoggedInUserName ""}}
-                <h4 class="padding-top-small">Du hast dich erfolgreich augeloggt</h4>
-                {{end}}
+
 
 
             </form>
         </div>
+
+        {{if . ""}}
+        <h4>Das Ausloggen war erfolgreich</h4>
+        {{end}}
+
 
 
 
