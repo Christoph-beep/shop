@@ -1,6 +1,10 @@
 /* Zentrierung*/
-.center {
+.centerText {
     text-align: center;
+}
+
+.centerItem {
+    align-items: center;
 }
 
 /* Größen*/

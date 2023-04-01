@@ -1,92 +1,108 @@
 {{template "header"}}
-      <!-- Navbar end-->
+
+<!-- Carousel-->
+<h2 class="text-center padding-top-small">Das sind unsere aktuellen Angebote</h2>
+<div id="carouselExampleCaptions" class="carousel slide carousel1 row" data-bs-ride="false">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+      aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+  </div>
+  <div class="carousel-inner d-flex flex-row">
+    <div class="carousel-item active">
+
+      <div class="row">
 
 
-    
-    <!-- <title>Document</title>
-    <h2 class="center padding-top-small">Diese Produkte kannst du aktuell bei uns kaufen:</h2>
 
-    <div class="container-sm text-center">
-        <picture>
-            {{$product1 := index . 0 }}  
-            <img src="/assets/Bilder/1042395_01.jpg" alt="" width="auto" height="auto">
-            <p>Diese Platte kostet aktuell: {{$product1.Preis}}</p>
-        </picture>
+        <div class="col-4" id="product0">
+          <div class="">
+            <div class="text-center">
+              {{$product1 := index . 0}}
+              <img src="../assets/Bilder/fee_786_587_png.png" class="imageKlein" alt="...">
+              <p>Name: <b>{{$product1.Name}}</b></p>
+              <p>Aktueller Preis : <b>{{$product1.Preis}}</b></p>
+              <p>Aktueller Bestand: <b>{{$product1.Stock}}</b></p>
+              <!-- Name tag is processed in the backend to get the information (get.FormValue("someValue"))-->
+              <!-- value for choosing the right product-->
 
-    </div> -->
-    
-    <!-- Carousel-->
-    <h2 class="center padding-top-small">Das sind unsere aktuellen Angebote</h2>
-    <div id="carouselExampleCaptions" class="carousel slide carousel1 row" data-bs-ride="false">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      </div>
-      <div class="carousel-inner d-flex flex-row">
-        <div class="carousel-item active">
+              <!-- product numbers starting from 0 for the 1st product-->
+              <form action="/shoppingCart" method="post">
+                <button type="submit" value="0" name="SumbitProduct">buy now</button>
+              </form>
 
-         <div class="row">
-
-        
-
-          <div class="col-4">
-            <div class="">
-              <div class="text-center">
-                {{$product2 := index . 1}}
-                <img src="../assets/Bilder/fee_786_587_png.png" class="imageKlein" alt="...">
-                <p>WD Red SSD 1TB</p>
-                <p>Aktueller Preis : <b>{{$product2.Preis}}</b></p>
-              </div>
 
             </div>
+
           </div>
-
-          <div class="col-4">
-            <div class="">
-              <div class="text-center">
-                <img src="../assets/Bilder/fee_786_587_png.png" class="imageKlein" alt="...">
-                <p>Seagate 4TB</p>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="col-4">
-            <div class="">
-              <div class="text-center">
-                <img src="../assets/Bilder/fee_786_587_png.png" class="imageKlein" alt="...">
-                <p>Seagate 4TB</p>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- div row Ende -->
-         </div>
-          
-          
-          
-        
-        <div class="carousel-item carousel-caption d-none d-md-block bg-dark.bg-gradient ">
-          
         </div>
-      
 
-      <button  class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <div class="col-4">
+          <div class="">
+            <div class="text-center">
+              {{$product2 := index . 1}}
+              <img src="../assets/Bilder/1042395_01.jpg" class="imageKlein" alt="...">
+              <p>Name: <b>{{$product2.Name}}</b></p>
+              <p>Aktueller Preis : <b>{{$product2.Preis}}</b></p>
+              <p>Aktueller Bestand : <b>{{$product2.Stock}}</b></p>
+
+              <form action="/shoppingCart" method="post">
+                <button type="submit" value="1" name="SumbitProduct">buy now</button>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="">
+            <div class="text-center">
+              {{$product3 := index . 0}}
+              <img src="../assets/Bilder/index.jpeg" class="imageKlein" alt="...">
+              <p>Name: <b>{{$product3.Name}}</b></p>
+              <p>Aktueller Preis : <b>{{$product3.Preis}}</b></p>
+              <p>Aktueller Bestand : <b>{{$product3.Stock}}</b></p>
+
+              <form action="/shoppingCart" method="post">
+                <button type="submit" value="2" name="SumbitProduct">buy now</button>
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- div row Ende -->
+      </div>
+
+
+
+
+
+
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    </div>
+  </div>
 
-    <!-- Carousel END-->
-        
-        
-             
-         
-</body>
-</html>
+  <!-- Carousel END-->
+
+  <script>
+
+  </script>
+
+
+
+  </body>
+
+  </html>

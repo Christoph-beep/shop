@@ -1,87 +1,38 @@
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Verlinkungen -->
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-  <script src="../assets/js/bootstrap.bundle.min.js"></script>
-  <!--Verlinkunen ENDE-->
-  <title>Document</title>
-</head>
+{{template "header"}}
 
-<body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/startseite">Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+<h3 class="text-center padding-top-small">Nutzer registrieren</h3>
 
-          <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Übersicht Produkte
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          <!-- Dropdown End-->
-          <li class="nav-item">
-            <a class="nav-link" href="/guthaben">Guthaben aufladen</a>
-          </li>
+<div class="input-group mb-3 padding-top-small justify-content-center col-lg-6">
+  <!-- Seite, wenn login erfolgreich-->
 
-          <li>
-            <a class="nav-link" href="/kontakt">Kontakt</a>
-          </li>
+  <form action="/registerUsers" method="post">
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Registrieren
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/login">Login</a></li>
-              <li><a class="dropdown-item" href="/registerUsers">Registrieren</a></li>
-            </ul>
-          </li>
+    <!-- Set username for user -->
+    <label for="text" class="text-center padding-top-small">Bitte gewünschten Nutzername eingeben</label>
+    <input name="usernameRegister" type="text" class="form-control center " placeholder="Username"
+      aria-label="usernameRegister" aria-describedby="basic-addon1">
 
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!-- Navbar end-->
+    <br>
 
-  <h3 class="text-center padding-top-small">Nutzer registrieren</h3>
+    <!-- Set password for user -->
 
-  <div class="input-group mb-3 padding-top-small justify-content-center col-lg-6">
-    <!-- Seite, wenn login erfolgreich-->
-    <form action="/registerUsers" method="post">
+    <label for="text" class="text-center">Please enter your password</label>
+    <input name="usernamePasswordRegister" type="password" class="form-control center " placeholder="password"
+      aria-label="login" aria-describedby="basic-addon1" required>
+    <br>
+    <button type="submit" class=" mx-auto ">abschließen</button>
 
-      <label for="text" class="text-center padding-top-small">Bitte gewünschten Nutzername eingeben</label>
-      <input name="usernameRegister" type="text" class="form-control center " placeholder="Username"
-        aria-label="usernameRegister" aria-describedby="basic-addon1">
+    {{if ne .Error ""}}
+    <h4 class="padding-top-small"> Error: {{.Error}}</h4>
+    {{end}}
+    {{if ne .Inventar.Username ""}}
+    <h4 class="padding-top-small"> Hallo {{.Inventar.Username}}, die Anmeldung war erfolgreich</h4>
+    {{end}}
 
-      <br>
-      <button type="submit" class=" mx-auto ">abschließen</button>
-
-      {{if ne .Error ""}}
-      <h4 class="padding-top-small"> Error: {{.Error}}</h4>
-      {{end}}
-      {{if ne .User.Username ""}}
-      <h4 class="padding-top-small"> Hallo {{.User.Username}}, die Anmeldung war erfolgreich</h4>
-      {{end}}
-
-    </form>
-  </div>
+  </form>
+</div>
 </body>
 
 </html>

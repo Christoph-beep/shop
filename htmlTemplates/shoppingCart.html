@@ -1,0 +1,41 @@
+{{template "header"}}
+
+
+<h2 class="padding-top-verySmall text-center"> Dein Warenkorb</h2>
+
+<div class="text-center padding-top-verySmall row">
+    {{if ne . ""}}
+
+    <p>{{.}} is your choosen product</p>
+    <p>the currently price is {{.}}</p>
+
+    <!--buying process -->
+
+    <form action="/shoppingCart" method="post">
+
+
+
+
+        <label for="text" class="padding-top-small text-center">Product into shoppingCart</label>
+        <br>
+        <!-- Name tag for communication with backend-->
+        <!-- backend proof, if there are still enougth products available requires-->
+        <div class="col padding-top-verySmall ">
+            <input name="QuantityChoosenProducts" type="number" min="0" placeholder="Quantity" aria-label="Username"
+                class="text-center" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="padding-top-verySmall">
+            <button type="submit" class="mx-auto col margin-top-small">abschließen</button>
+
+        </div>
+
+    </form>
+
+    {{else}}
+    <h2>no product has been choosen</h2>
+
+    {{end}}
+
+
+</div>

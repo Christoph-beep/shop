@@ -1,4 +1,6 @@
 <!-- User exists-->
+
+<!-- Everything jut works as aspected-->
 {{if ne . ""}}
 {{template "header"}}
 <h3 class="text-center padding-top-small">Guthaben aufladen 1</h3>
@@ -11,8 +13,9 @@
 
 
     <label for="text" class="padding-top-small text-center">Guthaben aufladen in Cobblestone</label>
+    <!-- Name tag for communication with backend-->
     <input name="valueCobblestone" type="number" min="0" class="form-control  center "
-      placeholder="Betrag in Cobblestone" aria-label="Username" aria-describedby="basic-addon1">
+      placeholder="Betrag in Cobblestone" aria-label="Username" aria-describedby="adding credits to user account">
 
     <br>
     <button type="submit" class="margin-top-small mx-auto ">abschließen</button>
@@ -21,13 +24,13 @@
 
 </div>
 
-<!-- user exists not-->
+<!-- something went wrong-->
 {{else}}
 {{template "header"}}
 
 <h3 class="text-center padding-top-small">Guthaben aufladen 2</h3>
 
-<h2 class="center padding-top-small">Nutzer konnte nicht gefunden werden</h2>
+<h2 class="text-center padding-top-small">Nutzer konnte nicht gefunden werden</h2>
 
 <div class="input-group mb-3 margin-top-small justify-content-center col-lg-6 padding-top-small">
   <!-- Hier wird auf addCredits weitergeleitet !!!-->

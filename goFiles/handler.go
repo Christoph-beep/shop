@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 	"strconv"
 	"text/template"
 )
@@ -27,17 +26,6 @@ func (i Inventar) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // parseGlob anschauen
 
-func viewhandler(w http.ResponseWriter, r *http.Request) {
-	username := r.URL.Path[len("/view/"):]
-	// fmt.Fprintf(w, "Hi there, I love %s!", username)
-	inventar, err := loadInventory(username)
-	if err != nil {
-		http.Redirect(w, r, "/404/", http.StatusFound)
-	}
-	t, _ := template.ParseFiles("htmlTemplates/view.html")
-	t.Execute(w, inventar)
-}
-
 // post request NICHT über die URl
 // get über URL
 
@@ -46,22 +34,14 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	cobbleStoneString := r.FormValue("cobblestone")
 	cobblestone, _ := strconv.Atoi(cobbleStoneString)
 	p := Inventar{Username: username, Cobblestone: cobblestone}
-	p.save()
+	p.saveInventar()
 	http.Redirect(w, r, "/view/"+username, http.StatusFound)
-}
-
-func products(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("htmlTemplates/startingPage.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
-	t.Execute(w, nil)
-	httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
-
 }
 
 func startingPage(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("htmlTemplates/startingPage.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
-	fmt.Println(t)
 	fmt.Println(err)
-	Produkte := []Product{product1, product2}
+	Produkte := []Product{product0, product1, product2}
 
 	err = t.Execute(w, Produkte)
 
@@ -70,7 +50,7 @@ func startingPage(w http.ResponseWriter, r *http.Request) {
 
 func guthaben(w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles("htmlTemplates/guthaben.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
-	currentlyLoggedInUser := GetActiveUser(r).Username
+	currentlyLoggedInUser := GetActiveUser(r).Inv.Username
 	// Weiterleitung auf formsCreditHandler erfolgt im html part !
 	t.Execute(w, currentlyLoggedInUser)
 
@@ -86,9 +66,7 @@ func contact(w http.ResponseWriter, r *http.Request) {
 
 func formsCredithandler(w http.ResponseWriter, r *http.Request) {
 
-	loggedInUser := GetActiveUser(r)
-
-	inventory, err2 := loadInventory(loggedInUser.Username)
+	inventory, err2 := loadInventory(GetActiveUser(r).Inv.Username)
 
 	if err2 != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -105,10 +83,10 @@ func formsCredithandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	inventory.Cobblestone = inventory.Cobblestone + cobbleStoneInt
-	inventory.save()
+	inventory.saveInventar()
 
 	// weiterleitung auf addCredits
-	t, err := template.ParseFiles("htmlTemplates/addCredits.html")
+	t, err := template.ParseFiles("htmlTemplates/addCredits.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	fmt.Println(err)
 
 	err = t.Execute(w, inventory)
@@ -122,19 +100,44 @@ func formsCredithandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+////// 		 Authentification 			/////
+
+// general functions
+
+func GetActiveUser(r *http.Request) User {
+	return currentlyLoggedInUser
+}
+
+func Login(username string) error {
+	user, err := loadUser(username)
+	if err != nil {
+		return err
+	}
+	currentlyLoggedInUser = user
+	return nil
+}
+
+func Logout() {
+	fmt.Println("ausloggen")
+	currentlyLoggedInUser = User{}
+}
+
 func registerUsers(w http.ResponseWriter, r *http.Request) {
 	var response struct {
 		Error string
-		User  User
+		Inventar
 	}
 
-	t, err := template.ParseFiles("htmlTemplates/registerUser.html")
+	// end of general functions
+
+	t, err := template.ParseFiles("htmlTemplates/registerUser.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	if r.Method == "GET" {
-		// erster Request
+		// first Request
 		t.Execute(w, response)
 		return
 	}
 	newUserName := r.FormValue("usernameRegister")
+	newPasswordUsername := r.FormValue("usernamePasswordRegister")
 
 	if newUserName == "" {
 		fmt.Println("Oh, die Variable scheint leer zu sein )-: ")
@@ -142,10 +145,18 @@ func registerUsers(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, response)
 		return
 	}
+
+	if newPasswordUsername == "" {
+		fmt.Println("Oh, das Passwort scheint leer zu sein )-: ")
+		response.Error = "Password can not be empty."
+		t.Execute(w, response)
+		return
+	}
+
 	fmt.Println(newUserName)
+	// To prevent that an existing user is going to be overwritten only change, if userAlreadyExists = false
 	if checkIfUserExists(newUserName) {
 		fmt.Println("Oh, ein Nutzer mit einem solchen Namen scheint leider schon zu existieren")
-		//w.Write([]byte("Username already exists"))
 		response.Error = "Username already exists."
 		t.Execute(w, response)
 		return
@@ -153,19 +164,19 @@ func registerUsers(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("new user has been registered")
 
 	newUser := User{
-		Username: newUserName,
 		Inv: Inventar{
 			Username:    newUserName,
 			Cobblestone: 0,
+			Password:    newPasswordUsername,
 		},
 	}
-	// To prevent that an existing user is going to be overwritten only change, if userAlreadyExists = false
 
+	// saving password
 	newUser.save()
 
 	fmt.Println(err)
 	//err = t.Execute(w, newuser1)
-	response.User = newUser
+	response.Username = newUserName
 	err = t.Execute(w, response)
 	if err != nil {
 		fmt.Println(err)
@@ -174,12 +185,8 @@ func registerUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginUser(w http.ResponseWriter, r *http.Request) {
-	type UserLoggIn struct {
-		currentlyLoggedInUserName string
-		errorWrongUsername        error
-	}
 
-	t, err := template.ParseFiles("htmlTemplates/login.html")
+	t, err := template.ParseFiles("htmlTemplates/login.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -187,32 +194,41 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 	// If input = logout, the user wants to log out
 	// logout information comes through the "name" fild in login
 
+	///// Get information from the user /////
 	currentlyLoggedInUser := r.FormValue("usernameLogin")
+	currentpassword := r.FormValue("usernamePasswordLogin")
 	// not a nice solution using a string called logout1 instead of a bool, but works currently
-	usernameLogout := r.FormValue("logout1")
+	usernameLogout := r.FormValue("logoutName")
+	fmt.Println("Der aktuelle Wert aus usernameLogout ist " + usernameLogout)
 
-	currentlyUser := UserLoggIn{
-		currentlyLoggedInUserName: currentlyLoggedInUser,
-		errorWrongUsername:        invalidUsername(),
-	}
-
-	if usernameLogout == "logout" {
-		currentlyUser.currentlyLoggedInUserName = ""
-		fmt.Println(currentlyUser)
+	///// logout of user /////
+	if usernameLogout == "logoutValue" {
+		fmt.Println("logout")
+		Logout()
+		fmt.Println("Du wurdest erfolgreich ausgeloggt")
+		t.Execute(w, GetActiveUser(r).Inv.Username)
+		return
 	}
 
 	// try to log in user
+
+	// add passwort auth with and
 	if checkIfUserExists(currentlyLoggedInUser) {
-		Login(currentlyLoggedInUser)
+		fmt.Println("true")
+
+		if checkPassword(currentlyLoggedInUser, currentpassword) {
+			Login(currentlyLoggedInUser)
+		}
+
 		// testing because of logout in the html partcurrentlyLoggedInUserName login
 
 		// Login without an valid username
-	} else {
-		//currentlyUser.errorWrongUsername =
-		currentlyLoggedInUser = ""
-
 	}
-	t.Execute(w, currentlyUser.currentlyLoggedInUserName)
+
+	t.Execute(w, GetActiveUser(r).Inv.Username)
+
+	// actually there is a problem with the templating
+
 }
 
 // error handeling here, later new file
@@ -220,10 +236,3 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 func invalidUsername() error {
 	return errors.New("this username is invalid, please register or log in with a valid one")
 }
-
-/*
- {{if ne .currentlyLoggedInUserName ""}}
-                <h4 class="padding-top-small">Hallo {{.currentlyLoggedInUserName}}, du hast dich erfolgreich eingeloggt
-                </h4>
-                {{end}}
-*/

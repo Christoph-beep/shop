@@ -1,0 +1,4 @@
+package goFiles
+
+func neogroni() {
+}

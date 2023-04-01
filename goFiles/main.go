@@ -1,10 +1,12 @@
 package goFiles
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/urfave/negroni"
 )
 
 func Main() {
@@ -25,7 +27,25 @@ func Main() {
 	r.HandleFunc("/addCredits", formsCredithandler)
 	r.HandleFunc("/registerUsers", registerUsers)
 	r.HandleFunc("/login", loginUser)
+	r.HandleFunc("/shoppingCart", buyingSystem)
 	log.Fatal(http.ListenAndServe(":8080", r))
+
+	// testing
+
+	r.Methods("GET").Path("/").HandlerFunc(endpointHandler)
+
+	n := negroni.New()
+	n.UseHandler(r)
+
+	err := http.ListenAndServe(":8080", n)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func endpointHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint handler called")
+
 	// r.HandleFunc("/registerUserSuccess", registerUsersSuccess)
 
 }
