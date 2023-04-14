@@ -1,4 +1,0 @@
-package goFiles
-
-func neogroni() {
-}

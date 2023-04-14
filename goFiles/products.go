@@ -6,6 +6,8 @@ type Product struct {
 	ID       int
 	BildName string
 	Stock    int
+	User
+	// Produkte map{pr}
 }
 
 // New Products

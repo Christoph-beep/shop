@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/urfave/negroni"
 )
 
 func Main() {
@@ -18,7 +17,7 @@ func Main() {
 	r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))
 
 	// handler
-
+	// Calculating productprice is in formscredithandler
 	r.HandleFunc("/save/{username}", saveHandler)
 	r.HandleFunc("/startseite", startingPage)
 	r.HandleFunc("/guthaben", guthaben)
@@ -27,20 +26,16 @@ func Main() {
 	r.HandleFunc("/addCredits", formsCredithandler)
 	r.HandleFunc("/registerUsers", registerUsers)
 	r.HandleFunc("/login", loginUser)
+	// buyingSystem
 	r.HandleFunc("/shoppingCart", buyingSystem)
+	r.HandleFunc("/boughtProducts", productsAlreadyBoughtOverview)
 	log.Fatal(http.ListenAndServe(":8080", r))
+	r.HandleFunc("/purchaseSucessful", purchaseSucessfully)
 
 	// testing
 
 	r.Methods("GET").Path("/").HandlerFunc(endpointHandler)
 
-	n := negroni.New()
-	n.UseHandler(r)
-
-	err := http.ListenAndServe(":8080", n)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func endpointHandler(w http.ResponseWriter, r *http.Request) {

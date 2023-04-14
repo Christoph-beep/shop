@@ -4,14 +4,14 @@
 <h2 class="padding-top-verySmall text-center"> Dein Warenkorb</h2>
 
 <div class="text-center padding-top-verySmall row">
-    {{if ne . ""}}
+    {{if ne .Name ""}}
 
-    <p>{{.}} is your choosen product</p>
-    <p>the currently price is {{.}}</p>
+    <p>{{.Name}} is your choosen product</p>
+    <p>the currently price is {{.Preis}} </p>
 
     <!--buying process -->
 
-    <form action="/shoppingCart" method="post">
+    <form action="/purchaseSucessful" method="post">
 
 
 
@@ -26,7 +26,8 @@
         </div>
 
         <div class="padding-top-verySmall">
-            <button type="submit" class="mx-auto col margin-top-small">abschließen</button>
+            <button type="submit" class="mx-auto col margin-top-small" value="purchaseProductSuccessful"
+                name="purchaseProduct">abschließen</button>
 
         </div>
 

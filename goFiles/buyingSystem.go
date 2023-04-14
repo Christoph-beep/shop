@@ -9,79 +9,62 @@ import (
 
 func buyingSystem(w http.ResponseWriter, r *http.Request) {
 
-	type errorMessages struct {
-		ErrorMessageNoUserLoggedIn   string
-		ErrorMessageNotEnoughCredits string
-	}
+	// user who is currently logged in
+	currentlyActiveUser := GetActiveUser(r).Inv.Username
 
-	type productInfo struct {
-		choosenProduct      Product
-		choosenProductName  string
-		choosenProductPrice int
-		errorMessages
-	}
-
-	ProductValue := r.FormValue("SumbitProduct")
-	productIDint, err := strconv.Atoi(ProductValue)
+	// gives back the product, Funtion in general Funcions
+	productID_String := r.FormValue("SumbitProduct")
+	fmt.Println(productID_String + "ist die Nummer des Produkts l.17 buying System")
+	productIDint, err := strconv.Atoi(productID_String)
+	fmt.Println(productIDint)
+	fmt.Println("convertion was successful")
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("error l.20 buyingSystem")
 	}
-	// gives back the product
-	choosenProductValue := loadProduct(productIDint)
+	choosenProductValue := loadcurrentlychoosenProduct(productIDint)
 
-	var productInfo1 = productInfo{
-		choosenProduct:      choosenProductValue,
-		choosenProductName:  choosenProductValue.Name,
-		choosenProductPrice: int(choosenProductValue.Preis),
-		//errorMessages:       errorMessages{ErrorMessageNoProduct: "No Product has been choosen"},
-	}
-
-	fmt.Println("line 33 buying System")
-
-	t, err := template.ParseFiles("htmlTemplates/shoppingCart.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
+	// fmt.Println("line 33 buying System")
+	t, err0 := template.ParseFiles("htmlTemplates/shoppingCart.html", "htmlTemplates/header.html", "htmlTemplates/footer.html")
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("error l.31 buyingSystem")
 	}
 
 	// for purchasing a product, user needs to be logged in
-	if GetActiveUser(r).Inv.Username != "" {
+	if currentlyActiveUser != "" {
 		// a user seems to be logged in
 		fmt.Println("user is logged in")
 		if choosenProductValue.Name != "" {
 			fmt.Println(choosenProductValue.Name + " ist der Name deines ausgewählten Produkts")
+			// Checking if user has put Products into the shoppingCart
+			// formsCredithandler(w, r)
 
-			if err != nil {
-				fmt.Println(ProductValue + "das steht als Productvalue")
+			if err0 != nil {
 				fmt.Println("An error occured during trying to convert string to int, likely the productID is empty")
 				error404(w, r)
 			}
 			// if all went right, this is executed
-			t.Execute(w, productInfo1.choosenProductName)
+			t.Execute(w, choosenProductValue)
 
 			// user decides to buy product
-			QuantityChoosenProductsString := r.FormValue("QuantityChoosenProducts")
-			QuantityChoosenProductsInt, err := strconv.Atoi(QuantityChoosenProductsString)
-			if err != nil {
-				fmt.Println("An error occured while trying to convert string to int l. 59 buying system")
-				fmt.Println(err)
-			}
 
-			// proof if user has enough credits
-			actualCredits := GetActiveUser(r).Inv.Cobblestone
-			totalAmountToPay := QuantityChoosenProductsInt * int(productInfo1.choosenProduct.Preis)
-			if actualCredits > totalAmountToPay {
-				fmt.Println("not enough credits available")
-				// Fehlercode über struct ?
-			}
-
-			// show the total amount 2 pay
 		}
 	}
 
 	// no user seems to be logged in
 	if GetActiveUser(r).Inv.Username == "" {
 		fmt.Println("no user seems to be logged in")
-		t.Execute(w, productInfo1.choosenProductName)
+		http.Redirect(w, r, "login", http.StatusMovedPermanently)
 	}
+
+}
+
+func productsAlreadyBoughtOverview(w http.ResponseWriter, r *http.Request) {
+	// Overview of the already bought items
+
+}
+
+func succesfullyPurchasedProducts(w http.ResponseWriter, r *http.Request) {
 
 }

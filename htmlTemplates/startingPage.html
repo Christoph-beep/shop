@@ -1,5 +1,4 @@
 {{template "header"}}
-
 <!-- Carousel-->
 <h2 class="text-center padding-top-small">Das sind unsere aktuellen Angebote</h2>
 <div id="carouselExampleCaptions" class="carousel slide carousel1 row" data-bs-ride="false">
@@ -19,6 +18,7 @@
           <div class="">
             <div class="text-center">
               {{$product1 := index . 0}}
+              <!-- WD RED 1TB-->
               <img src="../assets/Bilder/fee_786_587_png.png" class="imageKlein" alt="...">
               <p>Name: <b>{{$product1.Name}}</b></p>
               <p>Aktueller Preis : <b>{{$product1.Preis}}</b></p>
@@ -41,6 +41,7 @@
           <div class="">
             <div class="text-center">
               {{$product2 := index . 1}}
+              <!-- Segate Ironwolf 4TB-->
               <img src="../assets/Bilder/1042395_01.jpg" class="imageKlein" alt="...">
               <p>Name: <b>{{$product2.Name}}</b></p>
               <p>Aktueller Preis : <b>{{$product2.Preis}}</b></p>
@@ -59,6 +60,7 @@
           <div class="">
             <div class="text-center">
               {{$product3 := index . 0}}
+              <!-- Sandsik Ultra 1TB-->
               <img src="../assets/Bilder/index.jpeg" class="imageKlein" alt="...">
               <p>Name: <b>{{$product3.Name}}</b></p>
               <p>Aktueller Preis : <b>{{$product3.Preis}}</b></p>
@@ -76,12 +78,6 @@
         <!-- div row Ende -->
       </div>
 
-
-
-
-
-
-
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
         data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -94,15 +90,6 @@
       </button>
     </div>
   </div>
+</div>
 
-  <!-- Carousel END-->
-
-  <script>
-
-  </script>
-
-
-
-  </body>
-
-  </html>
+<!-- Carousel END-->

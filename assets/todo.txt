@@ -7,6 +7,7 @@ Nutzer kann sich mit cobblestone produkte kaufen
 addCredits = technische URl zum aufladen von Guthaben 
 Nutzer kann sich über Webseite registrieren 
 if trying to register with a usernamen, that is already taken, the user gets an error message 
+einfachen login für nutzer bauen !
 
 
 need to be done 
@@ -14,7 +15,10 @@ need to be done
 Wenn Nutzer Guthaben aufladen will, jedoch nicht existiret -> Info
 Nutzernamen in Ordner schreiben
 Info das Nutzer schon registriert, wenn Nutzer der schon registriert ist sich versucht zu registrieren -> Z.96 bool passen
-einfachen login für nutzer bauen !
+Fehler bei der Verrechnung von Produkten ( Guthaben wird nicht abgezogen)
+Weiterleitung nach erfolgreichem kauf fehlt
+beim kauf wird aktuell nur mit ints gerechnet, auf double umstellen
+
 
 
 

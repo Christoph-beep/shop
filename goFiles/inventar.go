@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-var currentlyLoggedInUser User
-
 // Cobblestone zum bezahlen
 // Nutzername zum identifizieren
 type Inventar struct {
@@ -18,9 +16,12 @@ type Inventar struct {
 
 // registering of users
 
+var currentlyLoggedInUser User
+
 type User struct {
 	// Username string
-	Inv Inventar
+	Inv            Inventar
+	isUserLoggedIn bool
 }
 
 func (u User) save() error {
@@ -31,6 +32,7 @@ func (u User) save() error {
 // with this the Inventar is going to be saved
 func (i Inventar) saveInventar() error {
 	fmt.Println("User is going to be saved")
+	// Empty file is created
 	filename := "Users/" + i.Username + ".txt"
 	user, err := json.Marshal(Inventar{Username: i.Username, Cobblestone: i.Cobblestone, Password: i.Password})
 
@@ -103,6 +105,8 @@ func checkIfUserExists(username string) bool {
 	} else {
 		fmt.Printf("%v file exist\n", checkValue)
 		fmt.Println("true")
+
 		return true
 	}
+
 }
